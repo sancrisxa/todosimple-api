@@ -5,9 +5,12 @@ import com.sancrisxa.todosimple.models.User;
 import com.sancrisxa.todosimple.repositories.TaskRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TaskService {
 
     @Autowired
@@ -15,6 +18,12 @@ public class TaskService {
 
     @Autowired
     private UserService userService;
+
+    public List<Task> findAllByUserId(Long userId) {
+        List<Task> tasks = this.taskRepository.findByUser_Id(userId);
+
+        return tasks;
+    }
 
     public Task findById(Long id) {
         Optional<Task> task = this.taskRepository.findById(id);
