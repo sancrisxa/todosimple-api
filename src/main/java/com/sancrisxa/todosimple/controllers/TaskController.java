@@ -2,6 +2,7 @@ package com.sancrisxa.todosimple.controllers;
 
 import com.sancrisxa.todosimple.models.Task;
 import com.sancrisxa.todosimple.services.TaskService;
+import com.sancrisxa.todosimple.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id) {
@@ -45,6 +49,7 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.taskService.delete(id);
         return ResponseEntity.noContent().build();
@@ -52,9 +57,11 @@ public class TaskController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId) {
+
+        this.userService.findById(userId);
+
         List<Task> objs = this.taskService.findAllByUserId(userId);
 
         return ResponseEntity.ok().body(objs);
     }
-
 }
